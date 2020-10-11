@@ -2,7 +2,7 @@ set -g fish_prompt_pwd_dir_length 0
 
 # Check if in git repository
 function _is_in_git_repository
-  echo (command git rev-parse --is-inside-work-tree 2>/dev/null)
+  echo (command git rev-parse --git-dir 2>/dev/null)
 end
 
 
@@ -25,14 +25,14 @@ function fish_prompt
 
   # Set cwd for git repository
   if [ (_is_in_git_repository) ]
-    set cwd (string replace (git rev-parse --show-toplevel) "" $PWD)
+    set cwd (string replace (git rev-parse --show-toplevel 2>/dev/null) "" $PWD)
     set cwd (string trim --left --chars "/" $cwd)
   else
     set cwd (prompt_pwd)
   end
 
   # Reduce prompt lenght to 30 chars max
-  if test (string length $cwd) -gt 30 
+  if test (string length "$cwd") -gt 30 
     set reduced_cwd ..(string sub --start=-28 $cwd)
   else 
     set reduced_cwd $cwd
