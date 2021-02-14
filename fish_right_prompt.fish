@@ -15,12 +15,11 @@ function _git_project
 end
 
 function fish_right_prompt
-  if [ (_is_in_git_repository) ]
-    # colors
-    set -l grey (set_color -d white)
-    set -l normal (set_color normal)
-    
+  # colors
+  set -l grey (set_color -d white)
+  set -l normal (set_color normal)
 
+  if [ (_is_in_git_repository) ]
     if [ (_is_git_dirty) ]
       set dirty ' !'
     end
@@ -30,5 +29,10 @@ function fish_right_prompt
     set -l project_name (basename $project)
     
     echo -n -s $grey $project_name '/' $branch $dirty $normal ' '
+  else
+    set -l user (whoami)
+    set -l host (hostname)
+
+    echo -n -s $grey $user '@' $host $normal ' '
   end
 end
