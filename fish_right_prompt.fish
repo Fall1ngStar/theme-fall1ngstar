@@ -25,10 +25,16 @@ function fish_right_prompt
     end
     
     set -l branch (_git_branch_name)
+    if test (string length "$branch") -gt 20 
+      set reduced_branch (string sub --length=18 $branch)..
+    else 
+      set reduced_branch $branch
+    end
+
     set -l project (_git_project)
     set -l project_name (basename $project)
     
-    echo -n -s $grey $project_name '/' $branch $dirty $normal ' '
+    echo -n -s $grey $project_name '/' $reduced_branch $dirty $normal ' '
   else
     set -l user (whoami)
     set -l host (hostname)
